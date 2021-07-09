@@ -1,0 +1,100 @@
+/* ========================================================================
+  Variables
+ ========================================================================== */
+ :root{
+    --dark-primary-color : #303F9F; /* background */
+   --default-primary-color : #3F51B5; /* background */
+   --light-primary-color : #C5CAE9; /* background */
+   --text-primary-color : #FFFFFF; /* text */
+   --accent-color : #448AFF; /* background */
+   --primary-text-color : #212121; /* text */
+   --secondary-text-color : #757575; /* text */
+   --divider-color : #BDBDBD; /* border */
+   --border-radius: .3rem;
+   --primary :#007bff;
+   --dark: #343a40;
+
+}
+
+/* ========================================================================
+   Universal selector
+ ========================================================================== */
+ * {
+    box-sizing: border-box;
+  }
+/* ========================================================================
+   Element selectors
+ ========================================================================== */
+
+ body {
+    background-color: var(--light-primary-color);
+    margin: 0;
+    padding: 0;
+    font-family: "IBM Plex Sans", sans-serif;
+    color: var(--primary-text-color);
+    line-height: 1.5;
+    font-size: 16px;
+}
+  
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    margin: 0;
+    color: var(--dark-primary-color);
+    line-height: 1.25;
+}
+  
+main {
+    margin: 20px auto;
+    width: 94%;
+}
+  
+p {
+    font-size: 1.2rem;
+}
+
+
+.hero {
+    padding: 3% 4%;
+    background-color: var(--dark);
+    color: var(--primary);
+    text-align: center;
+}
+  
+.hero p {    
+    text-align: center;
+}
+
+  /* FLEX CONTENT */
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+  
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+/* HEIGHT / WIDTH UTILS */
+.min-100-vh {
+    min-height: 100vh;
+}
+
+.min-100-vw {
+    min-width: 100vw;
+}
+
+.app-title {
+    font-size: 3rem;
+    background-color: var(--primary);
+    color: var(--dark);
+    padding: 0 10px;
+    display: inline-block;
+    border-radius: var(--border-radius);    
+  }
