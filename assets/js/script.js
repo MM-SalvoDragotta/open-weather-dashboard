@@ -70,6 +70,7 @@ function searchListRender(){
 
 }
 
+//remove the saved search
 searchList.addEventListener("click", function(event) {
   var element = event.target;
   // Checks if element is a button
@@ -81,6 +82,7 @@ searchList.addEventListener("click", function(event) {
     // Store updated theScores in localStorage, re-render the list
     storeSearches();
     searchListRender();
+    
   }
 });
 
