@@ -410,7 +410,7 @@ body {
     font-size: 1em;
   }
 
-  .save-li {
+  .saved-search {
     height: 50px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -421,11 +421,18 @@ body {
     line-height: 1.5;
     font-weight: bolder;
   }
+
+  .saved-search:hover{
+    border: 3px solid var(--dark-primary-color);
+    color : var(--orange);
+    cursor: pointer;
+}
    
-  .save-li::after {
+  .saved-search::after {
     content: " ";
     display: block;
     clear: both;
+     
   }
   
   

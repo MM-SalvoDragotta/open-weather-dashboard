@@ -40,11 +40,22 @@ function renderSearches() {
   for (var i = 0; i < unique.length; i++) {
     $("#search-list")
     .append(`
-    <li data-index=${i} class="save-li">${theSearches[i]}
+    <li data-index=${i} class="saved-search">${theSearches[i]}
       <button class="save-city">✔️</button>
     </li>
     `)
   }
+  $("li.saved-search").on("click",function(event) {  
+    var element = event.target; 
+    // console.log(element.textContent)
+    var city = element.childNodes[0].nodeValue.trim()
+    console.log(city) 
+    console.log('testing');
+    var url = renderEmptyUrl(city)
+    fetchCity(url)
+
+  });
+
 }
 
 function storeSearches() {
@@ -65,21 +76,6 @@ function searchListRender(){
   }
   // This is a helper function that will render Searches to the DOM
   renderSearches();
-
-  // searchList.addEventListener("click", function(event) {
-  //     var element = event.target;
-    
-  //     // Checks if element is a button
-  //     if (element.matches("button") === true) {
-  //       // Get its data-index value and remove the todo element from the list
-  //       var index = element.parentElement.getAttribute("data-index");
-  //       theSearches.splice(index, 1);
-    
-  //       // Store updated theScores in localStorage, re-render the list
-  //       storeSearches() 
-  //       renderSearches();
-  //     }
-  //   });
 }
 
 searchList.addEventListener("click", function(event) {
@@ -104,7 +100,7 @@ var fetchOneCall = function (lat, lon, name, country) {
     .then(data => {        
         const {current , daily } = data;
         const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${current.weather[0]["icon"]}.svg`; 
-        console.log(data)
+        // console.log(data)
         // console.log(current.temp);
         // console.log(current.wind_speed);
         // console.log(current.humidity);
@@ -153,52 +149,7 @@ var fetchOneCall = function (lat, lon, name, country) {
     });
 }
 
-function renderUVI(){
-    var selectUVI = $(".uvi");
-    //This will puch the past present future class to each row.
-    $.each(selectUVI, function (i, uvi) {
-        var getId = parseInt($(this).attr("id"));
-        if (getId >= 0 && getId<3) {
-            $(this).addClass("uvi-green");
-            }
-        else if (getId >= 3 && getId<6) {
-        $(this).addClass("uvi-yellow");
-            }
-        else if (getId >= 6 && getId<8) {
-            $(this).addClass("uvi-orange");
-                }
-        else if (getId >= 8 && getId<11) {
-            $(this).addClass("uvi-red");
-                }
-        else if (getId >= 11) {
-            $(this).addClass("uvi-violet");
-                }
-    });
-}
-
-form.addEventListener("submit", event => {
-  event.preventDefault();  
-  msg.textContent = "";
-  let inputVal = input.value.trim();
-  if (inputVal === "") {
-    return;
-  }
-  theSearches.push(inputVal)
-  $('#search-list').empty()
-  theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
-  theSearches.sort()
-  var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
-  
-  theSearches = unique;
-  localStorage.setItem("Weather", JSON.stringify(unique));
-  
-  searchListRender()
-
-  $('.cities').empty()
-  $('.forecasts').empty()
-
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`; 
-
+var fetchCity = function(url){
   fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -228,6 +179,74 @@ form.addEventListener("submit", event => {
       msg.textContent = "Please search for a valid city";
       forecastText.hide()
     });
+}
+
+function renderUVI(){
+    var selectUVI = $(".uvi");
+    //This will puch the past present future class to each row.
+    $.each(selectUVI, function (i, uvi) {
+        var getId = parseInt($(this).attr("id"));
+        if (getId >= 0 && getId<3) {
+            $(this).addClass("uvi-green");
+            }
+        else if (getId >= 3 && getId<6) {
+        $(this).addClass("uvi-yellow");
+            }
+        else if (getId >= 6 && getId<8) {
+            $(this).addClass("uvi-orange");
+                }
+        else if (getId >= 8 && getId<11) {
+            $(this).addClass("uvi-red");
+                }
+        else if (getId >= 11) {
+            $(this).addClass("uvi-violet");
+                }
+    });
+}
+
+function renderEmptyUrl(inputVal){
+  theSearches.push(inputVal)
+  $('#search-list').empty()
+  theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
+  theSearches.sort()
+  var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
+  
+  theSearches = unique;
+  localStorage.setItem("Weather", JSON.stringify(unique));
+  
+  searchListRender()
+
+  $('.cities').empty()
+  $('.forecasts').empty()
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`; 
+  return url
+}
+
+form.addEventListener("submit", event => {
+  event.preventDefault();  
+  msg.textContent = "";
+  let inputVal = input.value.trim();
+  if (inputVal === "") {
+    return;
+  }
+  // theSearches.push(inputVal)
+  // $('#search-list').empty()
+  // theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
+  // theSearches.sort()
+  // var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
+  
+  // theSearches = unique;
+  // localStorage.setItem("Weather", JSON.stringify(unique));
+  
+  // searchListRender()
+
+  // $('.cities').empty()
+  // $('.forecasts').empty()
+
+  // const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`; 
+  var url = renderEmptyUrl(inputVal)
+  fetchCity(url)
 
   msg.textContent = "";
   form.reset();
