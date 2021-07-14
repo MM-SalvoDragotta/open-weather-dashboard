@@ -41,21 +41,10 @@ function renderSearches() {
     $("#search-list")
     .append(`
     <li data-index=${i} class="saved-search">${theSearches[i]}
-      <button class="save-city">✔️</button>
+      <button class="save-city">❌</button>
     </li>
     `)
   }
-  $("li.saved-search").on("click",function(event) {  
-    var element = event.target; 
-    // console.log(element.textContent)
-    var city = element.childNodes[0].nodeValue.trim()
-    console.log(city) 
-    console.log('testing');
-    var url = renderEmptyUrl(city)
-    fetchCity(url)
-
-  });
-
 }
 
 function storeSearches() {
@@ -76,11 +65,13 @@ function searchListRender(){
   }
   // This is a helper function that will render Searches to the DOM
   renderSearches();
+  searchLink ();
+
+
 }
 
 searchList.addEventListener("click", function(event) {
   var element = event.target;
-
   // Checks if element is a button
   if (element.matches("button") === true) {
     // Get its data-index value and remove the todo element from the list
@@ -229,22 +220,7 @@ form.addEventListener("submit", event => {
   let inputVal = input.value.trim();
   if (inputVal === "") {
     return;
-  }
-  // theSearches.push(inputVal)
-  // $('#search-list').empty()
-  // theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
-  // theSearches.sort()
-  // var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
-  
-  // theSearches = unique;
-  // localStorage.setItem("Weather", JSON.stringify(unique));
-  
-  // searchListRender()
-
-  // $('.cities').empty()
-  // $('.forecasts').empty()
-
-  // const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`; 
+  }  
   var url = renderEmptyUrl(inputVal)
   fetchCity(url)
 
@@ -253,8 +229,20 @@ form.addEventListener("submit", event => {
   input.focus();
 });
 
+var searchLink = function(){
+  $("li.saved-search").on("click",function(event) {  
+    var element = event.target; 
+    // console.log(element.textContent)
+    var city = element.childNodes[0].nodeValue.trim()
+    // console.log(city) 
+    // console.log('testing');
+    var url = renderEmptyUrl(city)
+    fetchCity(url)
+  });
+}
+
 function init() {    
-  searchListRender()
+  searchListRender();
 }
 
 init()
