@@ -1,41 +1,25 @@
-// function renderLocalStorage(){
-//     var inputUserHours = document.getElementsByTagName('input');
-//     for (var i=0; i< hourArray.length ; i++) {
-//         var localStorageValue = JSON.parse(localStorage.getItem(hourArray[i].replace(/\s/g, '')));
-//         inputUserHours[i].value = localStorageValue 
-//     }
-// }
-
-// $(".btn").click(function(event){
-//     // console.log(event.target.parentElement.previousElementSibling);
-//     // console.log(event.target.parentElement.previousElementSibling.id)
-//     // console.log(event.target.parentElement.previousElementSibling.getAttribute("data-hour"))
-//     // console.log(event.target.parentElement.previousElementSibling.value);    
-//     // console.log(event.target.parentElement)
-//     // console.log(event.target.parentElement.id)
-//     var storageName = event.target.parentElement.previousElementSibling.getAttribute("data-hour");
-//     var storageValue = event.target.parentElement.previousElementSibling.value
-//     localStorage.setItem(storageName, JSON.stringify(storageValue));
-
-
-
-
 const form = document.querySelector(".top-banner form");
 const input = document.querySelector(".top-banner input");
 const msg = document.querySelector(".top-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
-const searchList = document.querySelector("#searh-list");
+const searchList = document.querySelector("#search-list");
 
 var forecastText = $("#forecast")
 
-var theSearches = ["Palermo"];
+var theSearches = [];
 
 const apiKey = "c5dae5a8e270024cd9fe6d4e536b2b74"
-// const key = "c5dae5a8e270024cd9fe6d4e536b2b74"
 
 var today = moment(new Date()).format('ddd [, ] Do MMMM YYYY')
 
 var forcastDays = []
+
+for (var i=1; i<6; i++){
+  futureDay = moment().add(i,'days').format('ddd [, ] Do MMMM YYYY')
+  forcastDays.push(futureDay)
+}
+// console.log(forcastDays)
+// var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
 
 // $('.text').blur(function() {
 // 	if ($(this).val() == '') {
@@ -45,26 +29,73 @@ var forcastDays = []
 //   }
 // })
 
-for (var i=1; i<6; i++){
-  futureDay = moment().add(i,'days').format('ddd [, ] Do MMMM YYYY')
-  forcastDays.push(futureDay)
-}
-// console.log(forcastDays)
-// var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
-
-
 function renderSearches() {  
   // searchList.innerHTML = "";  
   // Render a new li for each searched city
-  for (var i = 0; i < theSearches.length; i++) {
+  theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
+  theSearches.sort()
+  //https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+  var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
+
+  for (var i = 0; i < unique.length; i++) {
     $("#search-list")
     .append(`
-    <li data-index=${theSearches[i]} class="save-li">${theSearches[i]}
+    <li data-index=${i} class="save-li">${theSearches[i]}
       <button class="save-city">✔️</button>
     </li>
     `)
   }
 }
+
+function storeSearches() {
+  // Stringify and set key in localStorage to theSearches array
+  localStorage.setItem("Weather", JSON.stringify(theSearches));
+}
+
+function searchListRender(){
+  var storedSearches = JSON.parse(localStorage.getItem("Weather"));
+  // If theScores were retrieved from localStorage, update the theSearches array to it
+  if (storedSearches !== null) {
+    storedSearches = storedSearches.map(function(x){ return x.toUpperCase(); })
+    storedSearches.sort()
+    var unique = storedSearches.filter((v, i, a) => a.indexOf(v) === i);
+
+    theSearches = unique;
+    localStorage.setItem("Weather", JSON.stringify(unique));
+  }
+  // This is a helper function that will render Searches to the DOM
+  renderSearches();
+
+  // searchList.addEventListener("click", function(event) {
+  //     var element = event.target;
+    
+  //     // Checks if element is a button
+  //     if (element.matches("button") === true) {
+  //       // Get its data-index value and remove the todo element from the list
+  //       var index = element.parentElement.getAttribute("data-index");
+  //       theSearches.splice(index, 1);
+    
+  //       // Store updated theScores in localStorage, re-render the list
+  //       storeSearches() 
+  //       renderSearches();
+  //     }
+  //   });
+}
+
+searchList.addEventListener("click", function(event) {
+  var element = event.target;
+
+  // Checks if element is a button
+  if (element.matches("button") === true) {
+    // Get its data-index value and remove the todo element from the list
+    var index = element.parentElement.getAttribute("data-index");
+    theSearches.splice(index, 1);
+    $('#search-list').empty()
+    // Store updated theScores in localStorage, re-render the list
+    storeSearches();
+    searchListRender();
+  }
+});
 
 var fetchOneCall = function (lat, lon, name, country) {
     const oneCallEndpointUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${apiKey}`;
@@ -148,7 +179,21 @@ function renderUVI(){
 form.addEventListener("submit", event => {
   event.preventDefault();  
   msg.textContent = "";
-  let inputVal = input.value;
+  let inputVal = input.value.trim();
+  if (inputVal === "") {
+    return;
+  }
+  theSearches.push(inputVal)
+  $('#search-list').empty()
+  theSearches = theSearches.map(function(x){ return x.toUpperCase(); })
+  theSearches.sort()
+  var unique = theSearches.filter((v, i, a) => a.indexOf(v) === i);
+  
+  theSearches = unique;
+  localStorage.setItem("Weather", JSON.stringify(unique));
+  
+  searchListRender()
+
   $('.cities').empty()
   $('.forecasts').empty()
 
@@ -190,7 +235,7 @@ form.addEventListener("submit", event => {
 });
 
 function init() {    
-  renderSearches()
+  searchListRender()
 }
 
 init()
