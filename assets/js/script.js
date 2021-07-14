@@ -25,25 +25,28 @@
 // var lat =  -33.8679;
 // var lon = 151.2073;
 
+const form = document.querySelector(".top-banner form");
+const input = document.querySelector(".top-banner input");
+const msg = document.querySelector(".top-banner .msg");
+const list = document.querySelector(".ajax-section .cities");
+var forecastText = $("#forecast")
+
+const apiKey = "c5dae5a8e270024cd9fe6d4e536b2b74"
+const key = "c5dae5a8e270024cd9fe6d4e536b2b74"
+
 var today = moment(new Date()).format('ddd [, ] Do MMMM YYYY')
 
-var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
+var forcastDays = []
 
+for (var i=1; i<6; i++){
+  futureDay = moment().add(i,'days').format('ddd [, ] Do MMMM YYYY')
+  forcastDays.push(futureDay)
+}
+console.log(forcastDays)
 
-// var datetime = null;
-// date = null;
+// var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
 
-// date = moment(new Date());
-// var datetime_update = function() {
-//   date = moment(new Date());
-//   datetime.html(date.format('ddd [, ] Do MMMM YYYY hh:mm:ss A'));
-// };
-
-const key = "c5dae5a8e270024cd9fe6d4e536b2b74"
-// var city = "Palermo"
-// var endpointUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${key}`;
-
-var fetchOneCall = function (lat, lon) {
+var fetchOneCall = function (lat, lon, name, country) {
     const oneCallEndpointUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${key}`;
     fetch(oneCallEndpointUrl)
     .then(response => response.json())
@@ -64,10 +67,41 @@ var fetchOneCall = function (lat, lon) {
           <figcaption>${current.weather[0]["description"]}</figcaption>
         </figure>
         `)  
+        console.log(daily[0].temp.day)
+        console.log(daily[0].wind_speed)
+        console.log(daily[0].humidity)
+        console.log(daily[0].uvi)
+        const icon2 = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${daily[0].weather[0]["icon"]}.svg`; 
+        for (i=0; i<5; i++){
+          forecastText.show()
+          forecastText.css({'padding':'50px','padding-left':'10px'} )
+        $(".forecasts")
+          .append(`
+            <li class="forecast">
+                <h3 class="date">${forcastDays[i]}</h3>
+                <h2 class="city-name" data-name="${name},${country}">
+                <span>${name}</span>
+                <sup>${country}</sup>
+            </h2>
+
+            </li>
+          `)  
+        }
+      
+
+        // for (var i=0;i<5;i++){
+        //   $(".forecast")
+        //   .append(`
+        //   <div class="uvi" id="${current.uvi}"> UV index: ${current.uvi} </div>
+        //   <figure>
+        //     <img class="city-icon" src="${icon}" alt="${current.weather[0]["description"]}">
+        //     <figcaption>${current.weather[0]["description"]}</figcaption>
+        //   </figure>
+        //   `)  
+        // }
         renderUVI();        
     });
 }
-
 
 function renderUVI(){
     var selectUVI = $(".uvi");
@@ -92,29 +126,21 @@ function renderUVI(){
     });
 }
 
-
-const form = document.querySelector(".top-banner form");
-const input = document.querySelector(".top-banner input");
-const msg = document.querySelector(".top-banner .msg");
-const list = document.querySelector(".ajax-section .cities");
-/*SUBSCRIBE HERE FOR API KEY: https://home.openweathermap.org/users/sign_up*/
-const apiKey = "c5dae5a8e270024cd9fe6d4e536b2b74"
-// const apiKey = "4d8fb5b93d4af21d66a2948710284366";
-
 form.addEventListener("submit", e => {
-  e.preventDefault();
+  e.preventDefault();  
+  msg.textContent = "";
   let inputVal = input.value;
   $('.cities').empty()
+  $('.forecasts').empty()
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`; 
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
         // console.log(data)
-      const { main, name, sys, weather , wind , coord } = data;
-      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0]["icon"]}.svg`;
-      for (i=0; i<6; i++){
+      const { main, name, sys , wind , coord } = data;      
+      
         $(".cities")
         .append(`
           <li class="city">
@@ -129,15 +155,14 @@ form.addEventListener("submit", e => {
           <div> Humidity: ${main.humidity} % </div>
           <br>
           </li>
-        `)   
-      }
-  
+        `) 
 
-      fetchOneCall(coord.lat, coord.lon);
-      console.log(test);
+      fetchOneCall(coord.lat, coord.lon, name, sys.country);
+      // console.log(test);
     })
     .catch(() => {
       msg.textContent = "Please search for a valid city";
+      forecastText.hide()
     });
 
   msg.textContent = "";
