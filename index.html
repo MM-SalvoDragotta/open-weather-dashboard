@@ -39,36 +39,31 @@
 </head>
 
 <body class="flex-column min-100-vh">
-    <header class="hero">
-         <!-- https://www.w3schools.com/icons/fontawesome5_icons_weather.asp -->
-        <h1 class="app-title"><i class="fas fa-cloud-sun" ></i> Weather Dashboard</h1>
-        <p>This is a weather forecast dashboard app. Users are able to enter a city name in the search box and have current weather conditions displayed for that city, as well a five day forecast. Searched cities will be added below the search button and can be clicked on to display that cities weather data again.
-        </p>
-    </header>
+  <header class="hero">
+        <!-- https://www.w3schools.com/icons/fontawesome5_icons_weather.asp -->
+      <h1 class="app-title"><i class="fas fa-cloud-sun" ></i> Weather Dashboard</h1>
+      <p>This is a weather forecast dashboard app. Users are able to enter a city name in the search box and have current weather conditions displayed for that city, as well a five day forecast. Searched cities will be added below the search button and can be clicked on to display that cities weather data again.
+      </p>
+  </header>
 
-    <main class="flex-row justify-space-between">
-      <div class="col-12 col-md-4 ">
-        <div class="card top-banner">
-          <h3 class="card-header">Search By City</h3>
-            <form id="user-form" class="card-body">              
-              <input name="search" id="search" type="text" placeholder="Search for a city" class="form-input" autofocus />            
-              <button type="submit" class="btn btn-primary" id="search-button">
-              <i class="fas fa-search"></i> 
-              </button>
-              <span class="msg"></span>
-            </form>
-        </div>
+  <main class="flex-row justify-space-between">
+    <div class="col-12 col-md-4 ">
+      <div class="card top-banner">
+        <h3 class="card-header">Search By City</h3>
+        <!-- <form id="user-form" class="card-body">
+          <label for="key">API Key:</label>
+          <input type="text" class="text" id="key" name="key"><br><br>
+        </form>             -->
+          <form id="user-form" class="card-body">              
+            <input name="search" id="search" type="text" placeholder="Search for a city" class="form-input" autofocus />            
+            <button type="submit" class="btn btn-primary" id="search-button">
+            <i class="fas fa-search"></i> 
+            </button>
+            <span class="msg"></span>
+          </form>
       </div>
+    </div>
 
-    <!-- <section class="top-banner">
-      <div class="container">  -->
-               
-        <!-- <form>
-          <input type="text" placeholder="Search for a city" autofocus>
-          >
-        </form>
-      </div> -->
-    <!-- </section> -->
     <div class="col-12 col-md-8 ">
       <div class="ajax-section">
           <ul class="cities"></ul> 
@@ -76,24 +71,18 @@
       <div class="ajax-section2">
         <h2 id="forecast" class="hide">5-Day Forecast</h2>
         <ul class="forecasts"></ul> 
-     </div>
-
-
-
+      </div>
     </div>
-
-
   </main>
    
-    <footer>
-        <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-    </footer>
-
+  <footer>
+      <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  </footer>
     
-    <!-- Added link to the jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script type="text/javascript" src="./assets/js/script.js"></script>
+  <!-- Added link to the jQuery , Moment library -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script type="text/javascript" src="./assets/js/script.js"></script>
 
 </body>
 

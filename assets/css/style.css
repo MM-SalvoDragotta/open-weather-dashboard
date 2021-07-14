@@ -287,7 +287,7 @@ body {
 .ajax-section2 .forecasts{
     display: grid;
     grid-gap: 32px 20px;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   
 .ajax-section .city {
@@ -350,7 +350,7 @@ body {
     color: var(--text_dark);
   }
 
-.ajax-section2 .city-temp {
+.ajax-section2 .city-temp2 {
     font-size: 5rem;
     font-weight: bold;
     margin-top: 10px;
@@ -361,8 +361,9 @@ body {
     font-size: 0.5em;
   }
 
-.ajax-section2 .city sup {
-    font-size: 0.5em;
+.sup2 {
+    font-size: 50%;
+    top:-0.5em;
   }  
 
 .ajax-section .city-name sup {
@@ -380,8 +381,12 @@ body {
   }
 
 .date { 
-    font-size: 1rem;    
+    font-size: 0.8rem;    
   }
+
+.name-smaller{
+  font-size: 1rem;  
+}
   
 .ajax-section .city-icon {
     margin-top: 10px;

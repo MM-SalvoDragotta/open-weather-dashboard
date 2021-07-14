@@ -22,8 +22,6 @@
     
 // }
 
-// var lat =  -33.8679;
-// var lon = 151.2073;
 
 const form = document.querySelector(".top-banner form");
 const input = document.querySelector(".top-banner input");
@@ -38,12 +36,19 @@ var today = moment(new Date()).format('ddd [, ] Do MMMM YYYY')
 
 var forcastDays = []
 
+// $('.text').blur(function() {
+// 	if ($(this).val() == '') {
+//   	$('.err_text').empty().append('*');
+//   } else {
+//   	$('.err_text').empty();
+//   }
+// })
+
 for (var i=1; i<6; i++){
   futureDay = moment().add(i,'days').format('ddd [, ] Do MMMM YYYY')
   forcastDays.push(futureDay)
 }
-console.log(forcastDays)
-
+// console.log(forcastDays)
 // var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
 
 var fetchOneCall = function (lat, lon, name, country) {
@@ -67,38 +72,37 @@ var fetchOneCall = function (lat, lon, name, country) {
           <figcaption>${current.weather[0]["description"]}</figcaption>
         </figure>
         `)  
-        console.log(daily[0].temp.day)
-        console.log(daily[0].wind_speed)
-        console.log(daily[0].humidity)
-        console.log(daily[0].uvi)
-        const icon2 = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${daily[0].weather[0]["icon"]}.svg`; 
+        // console.log(daily[0].temp.day)
+        // console.log(daily[0].wind_speed)
+        // console.log(daily[0].humidity)
+        // console.log(daily[0].uvi)
+         
         for (i=0; i<5; i++){
           forecastText.show()
           forecastText.css({'padding':'50px','padding-left':'10px'} )
+          const icon2 = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${daily[i].weather[0]["icon"]}.svg`;
         $(".forecasts")
           .append(`
             <li class="forecast">
-                <h3 class="date">${forcastDays[i]}</h3>
-                <h2 class="city-name" data-name="${name},${country}">
-                <span>${name}</span>
-                <sup>${country}</sup>
-            </h2>
+              <h3 class="date">${forcastDays[i]}</h3>
+              <h2 class="city-name" data-name="${name},${country}">
+                <span class="name-smaller">${name}</span>
+                <sup class="name-smaller">${country}</sup>
+              </h2>
+              <div class="city-temp2">${Math.round(daily[i].temp.day)}<sup class="sup2">°C</sup></div>
+              <div> Wind: ${daily[i].wind_speed} m/s </div>
+              <br>
+              <div> Humidity: ${daily[i].humidity} % </div>
+              <br>
+              <div class="uvi" id="${daily[i].uvi}"> UV index: ${daily[i].uvi} </div>
+              <figure>
+                <img class="city-icon" src="${icon2}" alt="${daily[i].weather[0]["description"]}">
+                <figcaption>${daily[i].weather[0]["description"]}</figcaption>
+              </figure>
 
             </li>
           `)  
         }
-      
-
-        // for (var i=0;i<5;i++){
-        //   $(".forecast")
-        //   .append(`
-        //   <div class="uvi" id="${current.uvi}"> UV index: ${current.uvi} </div>
-        //   <figure>
-        //     <img class="city-icon" src="${icon}" alt="${current.weather[0]["description"]}">
-        //     <figcaption>${current.weather[0]["description"]}</figcaption>
-        //   </figure>
-        //   `)  
-        // }
         renderUVI();        
     });
 }
@@ -126,8 +130,8 @@ function renderUVI(){
     });
 }
 
-form.addEventListener("submit", e => {
-  e.preventDefault();  
+form.addEventListener("submit", event => {
+  event.preventDefault();  
   msg.textContent = "";
   let inputVal = input.value;
   $('.cities').empty()
@@ -158,7 +162,7 @@ form.addEventListener("submit", e => {
         `) 
 
       fetchOneCall(coord.lat, coord.lon, name, sys.country);
-      // console.log(test);
+      
     })
     .catch(() => {
       msg.textContent = "Please search for a valid city";
