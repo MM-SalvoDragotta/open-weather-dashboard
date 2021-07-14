@@ -9,10 +9,10 @@ You can view the deployed Weather Dashboard at this link [Weather Dashboard](htt
 ## Tech Used
 * [OpenWeather API](https://openweathermap.org/api)
 * Javascript
+* JQuery
 * HTML
 * CSS
 * Moment.js
-* Google Fonts
 * Font Awesome
 
 ## Mock-Up
