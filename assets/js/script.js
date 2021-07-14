@@ -18,19 +18,20 @@
 //     localStorage.setItem(storageName, JSON.stringify(storageValue));
 
 
-// function init() {    
-    
-// }
 
 
 const form = document.querySelector(".top-banner form");
 const input = document.querySelector(".top-banner input");
 const msg = document.querySelector(".top-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
+const searchList = document.querySelector("#searh-list");
+
 var forecastText = $("#forecast")
 
+var theSearches = ["Palermo"];
+
 const apiKey = "c5dae5a8e270024cd9fe6d4e536b2b74"
-const key = "c5dae5a8e270024cd9fe6d4e536b2b74"
+// const key = "c5dae5a8e270024cd9fe6d4e536b2b74"
 
 var today = moment(new Date()).format('ddd [, ] Do MMMM YYYY')
 
@@ -51,8 +52,22 @@ for (var i=1; i<6; i++){
 // console.log(forcastDays)
 // var tomorrow  = moment().add(1,'days').format('ddd [, ] Do MMMM YYYY')
 
+
+function renderSearches() {  
+  // searchList.innerHTML = "";  
+  // Render a new li for each searched city
+  for (var i = 0; i < theSearches.length; i++) {
+    $("#search-list")
+    .append(`
+    <li data-index=${theSearches[i]} class="save-li">${theSearches[i]}
+      <button class="save-city">✔️</button>
+    </li>
+    `)
+  }
+}
+
 var fetchOneCall = function (lat, lon, name, country) {
-    const oneCallEndpointUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${key}`;
+    const oneCallEndpointUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${apiKey}`;
     fetch(oneCallEndpointUrl)
     .then(response => response.json())
     .then(data => {        
@@ -174,4 +189,8 @@ form.addEventListener("submit", event => {
   input.focus();
 });
 
+function init() {    
+  renderSearches()
+}
 
+init()
