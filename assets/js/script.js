@@ -45,7 +45,7 @@ function renderSearches() {
     </li>
     `)
   }
-}
+  }
 
 function storeSearches() {
   // Stringify and set key in localStorage to theSearches array
@@ -74,15 +74,17 @@ function searchListRender(){
 searchList.addEventListener("click", function(event) {
   var element = event.target;
   // Checks if element is a button
-  if (element.matches("button") === true) {
-    // Get its data-index value and remove the todo element from the list
+  if (element.classList.contains("save-city")){
+  
+    // Get its data-index value and remove the search element from the list
     var index = element.parentElement.getAttribute("data-index");
     theSearches.splice(index, 1);
     $('#search-list').empty()
     // Store updated theScores in localStorage, re-render the list
     storeSearches();
-    searchListRender();
-    
+    searchListRender();    
+  }else{
+    return
   }
 });
 
@@ -234,12 +236,17 @@ form.addEventListener("submit", event => {
 var searchLink = function(){
   $("li.saved-search").on("click",function(event) {  
     var element = event.target; 
-    // console.log(element.textContent)
-    var city = element.childNodes[0].nodeValue.trim()
-    // console.log(city) 
-    // console.log('testing');
-    var url = renderEmptyUrl(city)
-    fetchCity(url)
+    if (!element.classList.contains("save-city")){
+   // console.log(element.textContent)
+   var city = element.childNodes[0].nodeValue.trim()
+   // console.log(city) 
+   // console.log('testing');
+   var url = renderEmptyUrl(city)
+   fetchCity(url)
+    }else{
+      return
+    }
+ 
   });
 }
 
